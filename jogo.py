@@ -55,18 +55,18 @@ class Jogo:
 			elif exibe_Jogo: 
 				self.tabuleiro.desenhaBordaTabuleiro()
 				self.tabuleiro.desenhaTabuleiro()
-				placarBandeiras = self.tabuleiro.qtdBombas - self.tabuleiro.qtdBandeiras
+				placarBandeiras = self.tabuleiro.getQtdBombas() - self.tabuleiro.getQtdBandeiras()
 				menu.setTamanhoFonte(64)
 				menu.draw_text(str(placarBandeiras),(255, 0, 0), 462, 50)
 				menu.setTamanhoFonte(96)
-				if self.tabuleiro.perdeu: 
+				if self.tabuleiro.getPerdeu(): 
 					self.tabuleiro.mostraTodasBombas()
 					menu.draw_text("Voce Perdeu :(", (255, 0, 0), 430, 300)
 				if self.tabuleiro.getVitoria():
 					self.tela.fill(pygame.Color(40, 40, 60))
 					menu.draw_text("Voce Ganhou!!!", (255, 128, 128), 430, 300)
 
-				if not self.tabuleiro.perdeu:
+				if not self.tabuleiro.getPerdeu():
 					self.tabuleiro.detectaClickCelula()
 				
 			pygame.display.flip()
