@@ -65,75 +65,75 @@ class Tabuleiro:
         event = pygame.event.wait()
         if event.type == pygame.MOUSEBUTTONDOWN: 
             if event.button == 3:
-                celula.bandeiraMarcada = not celula.bandeiraMarcada
-                if not celula.bandeiraMarcada: 
+                celula.setBandeiraMarcada(not celula.getBandeiraMarcada())
+                if not celula.getBandeiraMarcada(): 
                     self.qtdBandeiras -= 1
                 else:
                     self.qtdBandeiras += 1 
-            elif event.button == 1 and not celula.bandeiraMarcada:
-                if celula.possuiBomba: 
+            elif event.button == 1 and not celula.getBandeiraMarcada():
+                if celula.getPossuiBomba(): 
                     self.perdeu = True
-                    celula.celulaAberta = True
+                    celula.setCelulaAberta(True)
                 else: 
                     self.validaVizinhos(celula)
 
     def validaVizinhos(self, celula): 
         vizinhosComBomba = 0
-        x = celula.posCelula[0]
-        y = celula.posCelula[1]
+        x = celula.getPosCelula()[0]
+        y = celula.getPosCelula()[1]
         vizinhosSemBomba = []
         if x - 1 >= 0:
-            if self.matrizCelulas[x - 1][y].possuiBomba:
+            if self.matrizCelulas[x - 1][y].getPossuiBomba():
                 vizinhosComBomba += 1
             else:
-                if not self.matrizCelulas[x - 1][y].celulaAberta:
+                if not self.matrizCelulas[x - 1][y].getCelulaAberta():
                     vizinhosSemBomba.append(self.matrizCelulas[x - 1][y])
         if x - 1 >= 0 and y - 1 >= 0:
-            if self.matrizCelulas[x - 1][y - 1].possuiBomba:
+            if self.matrizCelulas[x - 1][y - 1].getPossuiBomba():
                 vizinhosComBomba += 1
             else:
-                if not self.matrizCelulas[x - 1][y - 1].celulaAberta:
+                if not self.matrizCelulas[x - 1][y - 1].getCelulaAberta():
                     vizinhosSemBomba.append(self.matrizCelulas[x - 1][y - 1])
         if x - 1 >= 0 and y + 1 <= 8: 
-            if self.matrizCelulas[x - 1][y + 1].possuiBomba:
+            if self.matrizCelulas[x - 1][y + 1].getPossuiBomba():
                 vizinhosComBomba += 1
             else:
-                if not self.matrizCelulas[x - 1][y + 1].celulaAberta:
+                if not self.matrizCelulas[x - 1][y + 1].getCelulaAberta():
                     vizinhosSemBomba.append(self.matrizCelulas[x - 1][y + 1])
         if y - 1 >= 0: 
-            if self.matrizCelulas[x][y - 1].possuiBomba:
+            if self.matrizCelulas[x][y - 1].getPossuiBomba():
                 vizinhosComBomba += 1
             else:
-                if not self.matrizCelulas[x][y - 1].celulaAberta:
+                if not self.matrizCelulas[x][y - 1].getCelulaAberta():
                     vizinhosSemBomba.append(self.matrizCelulas[x][y - 1])
         if y + 1 <= 8: 
-            if self.matrizCelulas[x][y + 1].possuiBomba:
+            if self.matrizCelulas[x][y + 1].getPossuiBomba():
                 vizinhosComBomba += 1
             else:
-                if not self.matrizCelulas[x][y + 1].celulaAberta:
+                if not self.matrizCelulas[x][y + 1].getCelulaAberta():
                     vizinhosSemBomba.append(self.matrizCelulas[x][y + 1])
         if x + 1 <= 8 and y - 1 >= 0: 
-            if self.matrizCelulas[x + 1][y - 1].possuiBomba:
+            if self.matrizCelulas[x + 1][y - 1].getPossuiBomba():
                 vizinhosComBomba += 1
             else:
-                if not self.matrizCelulas[x + 1][y - 1].celulaAberta:
+                if not self.matrizCelulas[x + 1][y - 1].getCelulaAberta():
                     vizinhosSemBomba.append(self.matrizCelulas[x + 1][y - 1])
         if x + 1 <= 8: 
-            if self.matrizCelulas[x + 1][y].possuiBomba:
+            if self.matrizCelulas[x + 1][y].getPossuiBomba():
                 vizinhosComBomba += 1
             else:
-                if not self.matrizCelulas[x + 1][y].celulaAberta:
+                if not self.matrizCelulas[x + 1][y].getCelulaAberta():
                     vizinhosSemBomba.append(self.matrizCelulas[x + 1][y])
         if x + 1 <= 8 and y + 1 <= 8: 
-            if self.matrizCelulas[x + 1][y + 1].possuiBomba:
+            if self.matrizCelulas[x + 1][y + 1].getPossuiBomba():
                 vizinhosComBomba += 1
             else:
-                if not self.matrizCelulas[x + 1][y + 1].celulaAberta:
+                if not self.matrizCelulas[x + 1][y + 1].getCelulaAberta():
                     vizinhosSemBomba.append(self.matrizCelulas[x + 1][y + 1])
 
-        celula.qtdBombasVizinhas = vizinhosComBomba
-        if not celula.celulaAberta:
-            celula.celulaAberta = True
+        celula.setQtdBombasVizinhas(vizinhosComBomba)
+        if not celula.getCelulaAberta():
+            celula.setCelulaAberta(True)
             self.celulasAbertas += 1
         
         if vizinhosComBomba == 0:
@@ -144,7 +144,7 @@ class Tabuleiro:
 
     def mostraTodasBombas(self):
         for pos in self.bombas:
-            self.matrizCelulas[pos].exibeBombasOcultas = True
+            self.matrizCelulas[pos].setExibeBombasOcultas(True) 
     
     def carregaImagem(self, caminhoImagem):
         imagem = pygame.image.load(caminhoImagem).convert()      
