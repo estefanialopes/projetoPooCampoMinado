@@ -14,27 +14,27 @@ class Celula (Botao):
         
     def desenha(self, screen):
         if not self.celulaAberta and self.bandeiraMarcada:
-            self.imagem = self.dicionarioImagens["bandeira"]
+            self._imagem = self.dicionarioImagens["bandeira"]
         elif self.possuiBomba and self.celulaAberta: 
-            self.imagem = self.dicionarioImagens["bombaExplodida"]
+            self._imagem = self.dicionarioImagens["bombaExplodida"]
         elif self.possuiBomba and self.exibeBombasOcultas: 
-            self.imagem = self.dicionarioImagens["bomba"]
+            self._imagem = self.dicionarioImagens["bomba"]
         elif not self.celulaAberta: 
-            self.imagem = self.dicionarioImagens["inicial"]
+            self._imagem = self.dicionarioImagens["inicial"]
         elif self.qtdBombasVizinhas >= 0 and self.qtdBombasVizinhas <= 8 and not self.possuiBomba:
-            self.imagem = self.dicionarioImagens[str(self.qtdBombasVizinhas)]
+            self._imagem = self.dicionarioImagens[str(self.qtdBombasVizinhas)]
 
         if self.possuiBomba: 
-            self.imagem = self.dicionarioImagens["bomba"]
-        screen.blit(self.imagem, (self.retangulo.x, self.retangulo.y)) 
+            self._imagem = self.dicionarioImagens["bomba"]
+        screen.blit(self._imagem, (self._retangulo.x, self._retangulo.y)) 
         
     def desenhaBombaNaocelulaAberta(self, screen):
         if self.possuiBomba:
             self.carregaImagens('imagens/unclicked-bomb.png')
-            screen.blit(self.imagem, (self.retangulo.x, self.retangulo.y))
+            screen.blit(self._imagem, (self._retangulo.x, self._retangulo.y))
         
     def carregaImagens(self, caminhoImagem):
-        self.imagem = pygame.image.load(caminhoImagem).convert()      
-        self.imagem = pygame.transform.scale(self.imagem, (64, 64))
+        self._imagem = pygame.image.load(caminhoImagem).convert()      
+        self._imagem = pygame.transform.scale(self._imagem, (64, 64))
 
     
