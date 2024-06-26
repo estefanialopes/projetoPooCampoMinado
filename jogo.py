@@ -6,16 +6,34 @@ from botao import Botao
 from tabuleiro import Tabuleiro
 class Jogo:
 	def __init__(self, altura, largura): #contrutor da classe
-		self.altura = altura
-		self.largura = largura
-		self.run= True
+		self.__altura = altura
+		self.__largura = largura
+		self.__run= True
+
+	def getAltura(self):
+		return self.__altura
+    
+	def setAltura(self, altura):
+		self.__altura = altura
+
+	def getLargura(self):
+		return self.__largura
+    
+	def setLargura(self, largura):
+		self.__largura = largura
+
+	def getRun(self):
+		return self.__run
+    
+	def setRun(self, run):
+		self.__run = run
 
 	def inicializa_jogo(self):
 		pygame.init() #inicializa o pygame
 
 	def	cria_tela(self):
 		pygame.display.init()
-		self.tela = pygame.display.set_mode((self.altura, self.largura), pygame.SHOWN) #define resolução da tela
+		self.tela = pygame.display.set_mode((self.__altura, self.__largura), pygame.SHOWN) #define resolução da tela
 		pygame.display.set_caption("Campo Minado")
 
 	def criaTabuleiro(self):
@@ -32,10 +50,10 @@ class Jogo:
 		exibe_Jogo = False
 		self.carrega_imagem()
 		self.tabuleiro.criaMatrizTabuleiro()
-		while self.run: #enquanto True o jogo roda 
+		while self.__run: #enquanto True o jogo roda 
 			for event in pygame.event.get(): #pega os eventos do jogo
 				if event.type == pygame.QUIT: #se evento for do tipo quit run recebe false e fecha o jogo
-					self.run = False
+					self.__run = False
 
 			self.tela.fill(pygame.Color(40, 40, 60))
 			if not exibe_Jogo:	
