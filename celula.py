@@ -64,10 +64,10 @@ class Celula (Botao):
             self._imagem = self.__dicionarioImagens["bomba"]
         screen.blit(self._imagem, (self._retangulo.x, self._retangulo.y)) 
         
-    def desenhaBombaNaocelulaAberta(self, screen):
-        if self.__possuiBomba:
-            self.carregaImagens('imagens/unclicked-bomb.png')
-            screen.blit(self._imagem, (self._retangulo.x, self._retangulo.y))
+    #def desenhaBombaNaocelulaAberta(self, screen):
+        #if self.__possuiBomba:
+            #self.carregaImagens('imagens/unclicked-bomb.png')
+            #screen.blit(self._imagem, (self._retangulo.x, self._retangulo.y))
         
     def carregaImagens(self, caminhoImagem):
         self._imagem = pygame.image.load(caminhoImagem).convert()      

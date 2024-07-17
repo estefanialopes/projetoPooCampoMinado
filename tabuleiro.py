@@ -10,6 +10,7 @@ class Tabuleiro:
         self.__qtdLinha = qtdLinha
         self.__qtdColuna = qtdColuna
         self.__screen = screen
+        #cria uma matriz do tipo celula, para ser instânciada no futuro
         self.__matrizCelulas = np.zeros((self.__qtdLinha, self.__qtdColuna), dtype=Celula)
         self.__perdeu = False
         self.__celulasAbertas = 0
@@ -40,7 +41,7 @@ class Tabuleiro:
         # Cria uma matriz de zeros
         self.tabuleiro = np.zeros((self.__qtdLinha, self.__qtdColuna), dtype=int)
         
-        # Gera um conjunto de posições únicas aleatórias
+        # Gera um conjunto de posições únicas aleatórias para as bombas
         self.bombas = set()
         while len(self.bombas) < self.__qtdBombas:
             pos = (random.randint(0, self.__qtdLinha - 1), random.randint(0, self.__qtdColuna - 1))
@@ -49,7 +50,9 @@ class Tabuleiro:
         # Define as posições selecionadas como 1
         for pos in self.bombas:
             self.tabuleiro[pos] = 1
+        
         self.inicializaListaImagens()
+        # verifica se possui bomba, instancia a classe celula e coloca na matriz de celulas
         posInicial = (360, 130)
         for i in range(len(self.tabuleiro)):
             for j in range(len(self.tabuleiro[i])):
@@ -57,7 +60,7 @@ class Tabuleiro:
                 celula = Celula(posInicial[0] + i * 64, posInicial[1] + j * 64, possuiBomba, self.listaImagens, (i,j))
                 self.__matrizCelulas[i][j] = celula; 
 
-    
+    #desenha todas as celulas do tabuleiro
     def desenhaTabuleiro(self): 
         for linhas in self.__matrizCelulas:
             for celula in linhas:
@@ -84,17 +87,20 @@ class Tabuleiro:
         if event.type == pygame.MOUSEBUTTONDOWN: 
             if event.button == 3:
                 celula.setBandeiraMarcada(not celula.getBandeiraMarcada())
-                if not celula.getBandeiraMarcada(): 
+                #calcula a quantidade de bandeiras marcadas para oo contador
+                if not celula.getBandeiraMarcada() and not celula.getCelulaAberta(): 
                     self.__qtdBandeiras -= 1
-                else:
+                elif not celula.getCelulaAberta():
                     self.__qtdBandeiras += 1 
+                #checa se ao clicar com botão esquerdo do mouse a celula possuir uma bomba perdeu o jogo    
             elif event.button == 1 and not celula.getBandeiraMarcada():
                 if celula.getPossuiBomba(): 
                     self.__perdeu = True
                     celula.setCelulaAberta(True)
                 else: 
                     self.validaVizinhos(celula)
-
+    #valida se os vizinhos possui bomba e abre as celulas cujo os vizinhos não possuem bomba
+    #e para de abrir ao encontar um vizinho que possui bomba
     def validaVizinhos(self, celula): 
         vizinhosComBomba = 0
         x = celula.getPosCelula()[0]
@@ -169,6 +175,7 @@ class Tabuleiro:
         return pygame.transform.scale(imagem, (64, 64))
     
     def inicializaListaImagens(self): 
+        #cria dicionari de imagens e carrega todas imagens 
         self.listaImagens = {
             "inicial": self.carregaImagem('imagens/empty-block.png'),
             "bandeira": self.carregaImagem('imagens/flag.png'),
