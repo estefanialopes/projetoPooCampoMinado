@@ -60,17 +60,13 @@ class Celula (Botao):
         elif self.__qtdBombasVizinhas >= 0 and self.__qtdBombasVizinhas <= 8 and not self.__possuiBomba:
             self._imagem = self.__dicionarioImagens[str(self.__qtdBombasVizinhas)]
 
-        if self.__possuiBomba: 
-            self._imagem = self.__dicionarioImagens["bomba"]
+
+        # if self.__possuiBomba: 
+        #     self._imagem = self.__dicionarioImagens["bomba"]
+
         screen.blit(self._imagem, (self._retangulo.x, self._retangulo.y)) 
         
-    #def desenhaBombaNaocelulaAberta(self, screen):
-        #if self.__possuiBomba:
-            #self.carregaImagens('imagens/unclicked-bomb.png')
-            #screen.blit(self._imagem, (self._retangulo.x, self._retangulo.y))
         
-    def carregaImagens(self, caminhoImagem):
-        self._imagem = pygame.image.load(caminhoImagem).convert()      
-        self._imagem = pygame.transform.scale(self._imagem, (64, 64))
+
 
     

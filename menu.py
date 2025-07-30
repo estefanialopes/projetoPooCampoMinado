@@ -23,5 +23,9 @@ class Menu:
         img = self.__fonte.render(text, True, color)
         self.__tela.blit(img,(x,y))
 
-    def setTamanhoFonte(self, tamanho):
+    def setTamanhoFonte(self, tamanho = 96):
         self.__fonte = pygame.font.SysFont("Arial", tamanho)
+        
+    def exibeMenuFimJogo(self, textoMenu, color = (255, 0, 0)):
+        self.draw_text(textoMenu, color, 20, 300)
+        self.draw_text("Jogar Novamente ?", color, 20, 340)

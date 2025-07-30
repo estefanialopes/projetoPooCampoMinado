@@ -40,26 +40,26 @@ class Tabuleiro:
     def criaMatrizTabuleiro(self):
         # Cria uma matriz de zeros
         self.tabuleiro = np.zeros((self.__qtdLinha, self.__qtdColuna), dtype=int)
-        
-        # Gera um conjunto de posições únicas aleatórias para as bombas
-        self.bombas = set()
-        while len(self.bombas) < self.__qtdBombas:
-            pos = (random.randint(0, self.__qtdLinha - 1), random.randint(0, self.__qtdColuna - 1))
-            self.bombas.add(pos)
-        
-        # Define as posições selecionadas como 1
-        for pos in self.bombas:
-            self.tabuleiro[pos] = 1
-        
         self.inicializaListaImagens()
-        # verifica se possui bomba, instancia a classe celula e coloca na matriz de celulas
         posInicial = (360, 130)
         for i in range(len(self.tabuleiro)):
             for j in range(len(self.tabuleiro[i])):
-                possuiBomba = self.tabuleiro[i][j] == 1
-                celula = Celula(posInicial[0] + i * 64, posInicial[1] + j * 64, possuiBomba, self.listaImagens, (i,j))
+                celula = Celula(posInicial[0] + i * 64, posInicial[1] + j * 64, False, self.listaImagens, (i,j))
                 self.__matrizCelulas[i][j] = celula; 
 
+    def adicionaBombasNoTabuleiro(self, posCelulaAberta):
+        self.bombas = set()
+        while len(self.bombas) < self.__qtdBombas:
+            #gera uma posicao aleatoria para as bombas e checa se essa posicao colide com 
+            # a primeira celula aberta se colide, entao uma nova posicao eh gerada
+            pos = (random.randint(0, self.__qtdLinha - 1), random.randint(0, self.__qtdColuna - 1))
+            if not posCelulaAberta[0] == pos[0] and not posCelulaAberta[1] == pos[1]:
+                self.bombas.add(pos)
+        
+        # Define as posições selecionadas como bombas
+        for pos in self.bombas:
+            self.__matrizCelulas[pos].setPossuiBomba(True)
+    
     #desenha todas as celulas do tabuleiro
     def desenhaTabuleiro(self): 
         for linhas in self.__matrizCelulas:
@@ -97,7 +97,9 @@ class Tabuleiro:
                 if celula.getPossuiBomba(): 
                     self.__perdeu = True
                     celula.setCelulaAberta(True)
-                else: 
+                else:
+                    if self.__celulasAbertas == 0:
+                        self.adicionaBombasNoTabuleiro(celula.getPosCelula())
                     self.validaVizinhos(celula)
     #valida se os vizinhos possui bomba e abre as celulas cujo os vizinhos não possuem bomba
     #e para de abrir ao encontar um vizinho que possui bomba
@@ -159,7 +161,7 @@ class Tabuleiro:
         if not celula.getCelulaAberta():
             celula.setCelulaAberta(True)
             self.__celulasAbertas += 1
-        
+        #condicao de parada da funcao recursiva eh o vizinho ter bomba
         if vizinhosComBomba == 0:
             for vizinho in vizinhosSemBomba:
                 self.validaVizinhos(vizinho)

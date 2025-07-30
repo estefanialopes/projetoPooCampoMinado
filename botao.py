@@ -4,6 +4,7 @@ class Botao():
     def __init__(self, x, y, imagem):
         self._imagem = imagem
         self._retangulo = self._imagem.get_rect()
+        #define a posicao inicial da imagem pelo canto superior esquerdo
         self._retangulo.topleft = (x,y)
     
     def getImagem(self):
@@ -24,6 +25,5 @@ class Botao():
     #detecta se o cursor do mouse passou em cima do botão    
     def detecta_colisao_mouse(self):
         posicao = pygame.mouse.get_pos()
-        
         return self._retangulo.collidepoint(posicao)
     
